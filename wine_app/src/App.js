@@ -15,7 +15,7 @@ function App() {
     <Navbar />
     <AllRoute />
     <Footer />
-
+{/* done */}
     {/* <ShortCart/> */}
     {/* <CheckOutPage/> */}
 {/* {<PaymentPage/>} */}
