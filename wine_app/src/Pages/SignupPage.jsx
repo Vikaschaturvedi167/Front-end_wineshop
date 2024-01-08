@@ -10,7 +10,7 @@ const SignupPage = () => {
 
     const submitSignup = async () => {
         try {
-            const response = await fetch('http://localhost:8000/signup', {
+            const response = await fetch('https://vikas-wine-back.cyclic.app/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

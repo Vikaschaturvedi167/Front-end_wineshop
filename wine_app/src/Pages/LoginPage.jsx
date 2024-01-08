@@ -1,67 +1,82 @@
-import React, { useState } from 'react';
-import './PagesCss/LoginPage.css';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Make sure to import Link from react-router-dom
+import './PagesCss/LoginPage.css'; // Ensure your CSS file path is correctly set
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loginSuccess, setLoginSuccess] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const submitLogin = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
+  // Handle login form submission
+  const handleLogin = (e) => {
+    e.preventDefault();
 
-            const data = await response.json();
-            console.log(data); // Handle response data as needed
+    // Simulating successful login
+    // In a real application, this part would involve an API call to your backend
+    // to validate the credentials and get the token/user information
+    const token = 'some_dummy_token'; // Replace with actual token received from the server
+    const userInfo = { email }; // Replace with user information received from the server
 
-            if (response.status === 200) {
-                setLoginSuccess(true);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    // Store token and user info in localStorage
+    localStorage.setItem('authToken', token);
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-    return (
-        <>
-            <div className='main_container_signup'>
-                {loginSuccess && (
-                    <div className='success-message'>
-                        Welcome to MINE-WINE {email}
-                    </div>
-                )}
-                <div className='header'>
-                    <h2>Login</h2>
-                </div>
-                <div className='box'>
-                    <input
-                        type='email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder='E-mail'
-                    ></input>
-                </div>
-                <div className='box'>
-                    <input
-                        type='password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder='Password'
-                    ></input>
-                </div>
-                <p>
+    setIsLoggedIn(true);
+  };
+
+  // Check localStorage for authentication token on component mount
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setIsLoggedIn(true);
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      setEmail(userInfo.email);
+    }
+  }, []);
+
+  // Handle logout
+  const handleLogout = () => {
+    // Remove token and user info from localStorage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userInfo');
+    setIsLoggedIn(false);
+  };
+
+  return (
+    <div className='main_container_signup'>
+      {isLoggedIn ? (
+        <div className='header'>
+          <div className='success-message'>
+            Welcome to MINE-WINE {email} <Link to="/HomePage"> GoToHomepage </Link>
+          </div>
+          <button id='sign_up' onClick={handleLogout}>Logout</button>
+        </div>
+      ) : (
+        <form onSubmit={handleLogin}>
+          <div className='box'>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className='box'>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <p>
                     Don't Have an Account <Link to="/signup">Create Account</Link>
                 </p>
-                <button onClick={submitLogin} id='sign_up'>Login</button>
-            </div>
-        </>
-    );
+          <button type="submit" id='sign_up'>Login</button>
+        </form>
+      )}
+    </div>
+  );
 };
 
 export default LoginPage;

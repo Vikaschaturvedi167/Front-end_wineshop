@@ -22,7 +22,7 @@ const ProductDetails = ({id='1'}) => {
     }
    
     const bUrl=`https://wine-api.onrender.com/wines`;
-    const Myurl = `https://server-3o3a.onrender.com/products/${id}`;
+    const Myurl = `https://vikas-wine-back.cyclic.app/products/${id}`;
 
   const Navigate = useNavigate()
 

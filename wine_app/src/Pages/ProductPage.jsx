@@ -19,7 +19,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchData = async (pageNumber) => {
       try {
-        const res = await fetch(`https://server-3o3a.onrender.com/products`);
+        const res = await fetch(`https://vikas-wine-back.cyclic.app/products`);
         const data = await res.json();
         setProducts(data);
         console.log(data);
